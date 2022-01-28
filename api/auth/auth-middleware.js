@@ -32,24 +32,24 @@ function checkBodyOfUsernameAndPassword(req, res, next){
     }
 }
 
-function checkUsernameExists(req, res, next){
-    // return 'you are in the check username exists middleware'
-    User.findBy({ username: req.body.username })
-        .then(users => {
-            if(users) {
-                next()
-            } else {
-                next({
-                    status: 422,
-                    message: 'username taken'
-                })
-            }
-        })
-        .catch(next)
-}
+// dont need??
+// function checkUsernameExists(req, res, next){
+//     User.findBy({ username: req.body.username })
+//         .then(users => {
+//             if(users) {
+//                 req.user = users
+//                 next()
+//             } else {
+//                 next({
+//                     status: 422,
+//                     message: 'username taken'
+//                 })
+//             }
+//         })
+//         .catch(next)
+// }
 
 module.exports = {
     checkUsernameTaken,
-    checkUsernameExists,
     checkBodyOfUsernameAndPassword
 }
