@@ -14,8 +14,8 @@ const user2 = {
 }
 
 const user3 = {
-    username: 'redd mahmah',
-    password: '1234'
+    username: '',
+    password: ''
 }
 
 beforeAll( async () => {
@@ -54,11 +54,11 @@ describe('[GET] jokes', () => {
 describe('[POST] login', () => {
   test('returns error status', async () => {
     const res = await request(server).post('/api/auth/login').send(user1)
-    expect(res.status).toBe(401)
+    expect(res.status).toBe(422)
   })
   test('returns error message', async () => {
-    const res = await request(server).post('/api/auth/login').send(user1)
-    expect(res.status).toBe(401)
+    const res = await request(server).post('/api/auth/login').send(user3)
+    expect(res.body.message).toBe('username and password required')
   })
 })
 
