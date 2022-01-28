@@ -6,13 +6,13 @@ const makeToken = require('./auth-token-builder');
 const User = require('./auth-model');
 const { 
   checkUsernameTaken,
-  checkBodyOfUsernameAndPassword 
+  checkBodyOfUsernameAndPassword,
+  checkUsernameExists 
 } = require('./auth-middleware');
 
 router.get('/users', (req, res, next) => {
   User.find()
     .then(users => {
-      console.log(users);
       res.json(users)
     })
     .catch(next)
@@ -21,7 +21,6 @@ router.get('/users', (req, res, next) => {
 router.get('/users/:id', (req, res, next) => {
   User.findById(req.params.id)
     .then(users => {
-      console.log(users);
       res.json(users)
     })
     .catch(next)
@@ -40,9 +39,7 @@ router.post('/register',
         .catch(next)
 });
 
-router.post('/login', checkBodyOfUsernameAndPassword, (req, res, next) => {
-
-    // res.json('hello from login endpoint')
+router.post('/login', checkBodyOfUsernameAndPassword, checkUsernameExists, (req, res, next) => {
     const { password } = req.body
       if(bcrypt.compareSync(password, req.user.password)) {
         const token = makeToken(req.user)

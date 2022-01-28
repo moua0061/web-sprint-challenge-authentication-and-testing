@@ -3,7 +3,6 @@ const User = require('./auth-model');
 
 
 function checkUsernameTaken(req, res, next){
-
     User.findBy({ username: req.body.username })
         .then(users => {
             if(!users) {
@@ -22,7 +21,6 @@ function checkUsernameTaken(req, res, next){
 function checkBodyOfUsernameAndPassword(req, res, next){
     const { username, password } = req.body
     if(!username.trim() || !password) {
-        console.log(username);
         next({
             status: 422,
             message: 'username and password required'
@@ -33,23 +31,24 @@ function checkBodyOfUsernameAndPassword(req, res, next){
 }
 
 // dont need??
-// function checkUsernameExists(req, res, next){
-//     User.findBy({ username: req.body.username })
-//         .then(users => {
-//             if(users) {
-//                 req.user = users
-//                 next()
-//             } else {
-//                 next({
-//                     status: 422,
-//                     message: 'username taken'
-//                 })
-//             }
-//         })
-//         .catch(next)
-// }
+function checkUsernameExists(req, res, next){
+    User.findBy({ username: req.body.username })
+        .then(users => {
+            if(users) {
+                req.user = users
+                next()
+            } else {
+                next({
+                    status: 422,
+                    message: 'username taken'
+                })
+            }
+        })
+        .catch(next)
+}
 
 module.exports = {
     checkUsernameTaken,
-    checkBodyOfUsernameAndPassword
+    checkBodyOfUsernameAndPassword,
+    checkUsernameExists
 }
