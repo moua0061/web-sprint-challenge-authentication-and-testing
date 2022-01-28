@@ -54,6 +54,16 @@ Your finished project must include all of the following requirements (further in
 Be prepared to demonstrate your understanding of this week's concepts by answering questions on the following topics.
 
 1. Differences between using _sessions_ or _JSON Web Tokens_ for authentication.
+    Session cookies make use of session-based authentication. A user’s logged in state is saved in the server’s memory. After a user signs in, a session is securely created by the server. Then, that session ID is stored in a session cookie on the user’s browser. While the user remains logged in, the cookie is sent with every subsequent request.Cookies are not accessible from JavaScript or anywhere because they are cryptographically signed and very secure. Sessions has expirations. 
+
+    A JSON web token takes JASON data, called a claim, and transfers it securely. It does this by cryptographically signing the claim. The signature is either symmetrically or asymmetrically signed, but both offer authentication. With JSON web tokens, your identity is unequivocally verified, and you’re able to continue browsing the website or app where you logged in. JSON web token consists of three main parts that are separated by periods: A header, payload, and signature.
+
 2. What does `bcryptjs` do to help us store passwords in a secure manner?
+    It hashes a password where it implements salting both manually and automatically by accumulating hashing rounds. It will not store our plain text password but an encrypted password that has been hashed at a specific round declared by the developer. Having an algorithm that hashes the information multiple times (rounds) means an attacker needs to have the hash, know the algorithm used, and how many rounds were used to generate the hash in the first place.
 3. How are unit tests different from integration and end-to-end testing?
+    a. When doing E2E (end-to-end) tests will run the entire application (both frontend and backend) and your test will interact with the app just like a typical user would.
+    b. Integration testings is to check the connectivity and communication between different components of the application. 
+    c. Unit testing is when you test a small isolated unit.
+
 4. How does _Test Driven Development_ change the way we write applications and tests?
+    Helps developers better analyze and understand client requirements and request clarity when they are not adequately defined. The addition and testing of new functionalities become much easier in the latter stages of development. Test coverage under TDD is much higher compared to the conventional development models. This is because the TDD focuses on creating tests for each functionality right from the beginning. Enhances the productivity of the developer and leads to the development of a codebase that is flexible and easy to maintain.
