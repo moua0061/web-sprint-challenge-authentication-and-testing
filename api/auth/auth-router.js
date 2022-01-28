@@ -1,7 +1,29 @@
 const router = require('express').Router();
+const bcrypt = require('bcryptjs');
 
-router.post('/register', (req, res) => {
-  res.end('implement register, please!');
+const User = require('./auth-model');
+const { checkUsernameTaken, checkUsernameExists } = require('./auth-middleware');
+
+router.get('/users', (req, res, next) => {
+  User.find()
+    .then(users => {
+      console.log(users);
+      res.json(users)
+    })
+    .catch(next)
+})
+
+router.get('/users/:id', (req, res, next) => {
+  User.findById(req.params.id)
+    .then(users => {
+      console.log(users);
+      res.json(users)
+    })
+    .catch(next)
+})
+
+router.post('/register', checkUsernameTaken, (req, res, next) => {
+  
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
@@ -27,10 +49,16 @@ router.post('/register', (req, res) => {
     4- On FAILED registration due to the `username` being taken,
       the response body should include a string exactly as follows: "username taken".
   */
+  let { username, password } = req.body
+  const hash = bcrypt.hashSync(password, 8)
+  User.add({ username, password: hash })
+      .then(newUser => {
+        res.json(newUser)
+      })
+      .catch(next)
 });
 
-router.post('/login', (req, res) => {
-  res.end('implement login, please!');
+router.post('/login', checkUsernameExists, (req, res, next) => {
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
@@ -54,6 +82,19 @@ router.post('/login', (req, res) => {
     4- On FAILED login due to `username` not existing in the db, or `password` being incorrect,
       the response body should include a string exactly as follows: "invalid credentials".
   */
+      // res.json('hello from login endpoint')
+      const { password } = req.body
+      if(bcrypt.compareSync(password, )){
+        console.log(req.user);
+        res.json({
+          message: `Welcome ${req.user} `
+        })
+      } else {
+        next({
+          status: 401,
+          message: 'Invalid Credentials'
+        })
+      }
 });
 
 module.exports = router;
