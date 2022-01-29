@@ -42,7 +42,7 @@ test('sanity', () => {
 
 describe('[GET] jokes', () => {
     test('returns error status', async () => {
-        const res = await request(server).get('api/jokes')
+        const res = await request(server).get('/api/jokes')
         expect(res.status).toBe(403)
     })
     test('returns an error message', async () => {
